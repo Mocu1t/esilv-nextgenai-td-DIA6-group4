@@ -1,3 +1,22 @@
+# Sub-group DIA6 - Group 4
+
+- Pack version: `2026-10-18-students-1`
+- Database: `data/boutique.sqlite`, SHA-256 `0077e235adc2ca647b484e3083c98a6d7cae3ef3655ce366a299caf13398fec2`
+- Reports: [reports/](reports/)
+
+| Member | TD 1 role | Model / task |
+|---|---|---|
+| Raphael DEMOUGE | A, operator | Groq `openai/gpt-oss-120b` |
+| Carl-Edouard AUDUSSEAU | B, operator | Groq `openai/gpt-oss-20b` |
+| Grégoire LEGROS | C, operator | OpenRouter `cohere/north-mini-code:free` |
+| Aurelien PAYEN | D, operator | Groq `qwen/qwen3.8-27b` |
+| Thibault ALLORY | E, operator | OpenRouter `dots-studio/dots-3-note-preview:free` |
+| Mathias COUDER | F, checker | cross-checks references, merges traces, prepares the summaries |
+
+Roles rotate in TD 2 and TD 3.
+
+---
+
 # Lab kit, Trustworthy generative AI, ESILV
 
 > Final. Pack 2026-10-18-students-1. Set your machine up with [Before TD 1](../before-td1-en.html).
