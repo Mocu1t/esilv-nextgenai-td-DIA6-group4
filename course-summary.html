@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NextGenAI Course Checklist</title>
+<style>
+:root{
+  --bg:#f7f6f3; --surface:#ffffff; --surface-2:#f0eee9; --text:#1d1c1a; --muted:#6b6862;
+  --border:#e2dfd8; --accent:#2f5d8a; --accent-soft:#e3ecf5; --ok:#2e7d4f; --ok-soft:#e1f1e7;
+  --warn:#9a6200; --warn-soft:#fbf0d9; --bad:#a63a2e; --bad-soft:#f8e3e0;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#161614; --surface:#1f1f1c; --surface-2:#292925; --text:#ecebe7; --muted:#a19e96;
+    --border:#373631; --accent:#7fb0e0; --accent-soft:#1f2f40; --ok:#6fc591; --ok-soft:#1c3226;
+    --warn:#e5b25a; --warn-soft:#3a2e17; --bad:#ec8a7e; --bad-soft:#3d221e;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#161614; --surface:#1f1f1c; --surface-2:#292925; --text:#ecebe7; --muted:#a19e96;
+  --border:#373631; --accent:#7fb0e0; --accent-soft:#1f2f40; --ok:#6fc591; --ok-soft:#1c3226;
+  --warn:#e5b25a; --warn-soft:#3a2e17; --bad:#ec8a7e; --bad-soft:#3d221e;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:28px 16px 80px}
+h1{font-size:1.7rem;margin:0 0 4px}
+h2{font-size:1.2rem;margin:36px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+h3{font-size:1rem;margin:20px 0 8px}
+p{margin:6px 0 10px}
+a{color:var(--accent)}
+code{font:13px/1.4 ui-monospace,Consolas,monospace;background:var(--surface-2);padding:1px 5px;border-radius:4px}
+pre{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:12px;overflow-x:auto;font:13px/1.5 ui-monospace,Consolas,monospace;margin:8px 0}
+.sub{color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:10px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.stat .k{font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.stat .v{font-size:1.05rem;font-weight:600}
+.callout{border-radius:8px;padding:10px 14px;margin:10px 0;border:1px solid var(--border)}
+.callout.now{background:var(--accent-soft)}
+.callout.warn{background:var(--warn-soft);border-color:transparent}
+.callout.bad{background:var(--bad-soft);border-color:transparent}
+.tablewrap{overflow-x:auto;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:14px;background:var(--surface)}
+th,td{border:1px solid var(--border);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:var(--surface-2);font-weight:600}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;font-size:.75rem;padding:1px 8px;border-radius:999px;background:var(--surface-2);color:var(--muted);margin-left:6px;vertical-align:1px}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.today{background:var(--accent-soft);color:var(--accent)}
+/* checklist */
+.topbar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.bar{flex:1;min-width:160px;height:10px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--ok);width:0;transition:width .2s}
+button{font:inherit;font-size:13px;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer}
+button:hover{background:var(--surface-2)}
+.sec{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin:12px 0;overflow:hidden}
+.sec>summary{cursor:pointer;padding:12px 16px;font-weight:600;display:flex;gap:10px;align-items:center;list-style:none}
+.sec>summary::-webkit-details-marker{display:none}
+.sec>summary::before{content:"▸";color:var(--muted);transition:transform .15s}
+.sec[open]>summary::before{transform:rotate(90deg)}
+.sec .count{margin-left:auto;font-weight:500;font-size:.85rem;color:var(--muted)}
+.sec ul{list-style:none;margin:0;padding:0 16px 12px}
+.sec li{border-top:1px solid var(--border);padding:8px 0}
+.sec label{display:flex;gap:10px;cursor:pointer;align-items:flex-start}
+.sec input{margin-top:4px;width:16px;height:16px;flex:none;accent-color:var(--ok)}
+.sec li.done .t{color:var(--muted);text-decoration:line-through}
+.sec .d{display:block;font-size:.85rem;color:var(--muted);margin-top:2px}
+.tag{font-size:.7rem;font-weight:600;padding:0 6px;border-radius:4px;background:var(--accent-soft);color:var(--accent);margin-left:4px;white-space:nowrap}
+.links{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 0 26px}
+.links a{font-size:.75rem;text-decoration:none;padding:1px 8px;border-radius:999px;border:1px solid var(--border);background:var(--surface-2);color:var(--accent)}
+.links a::before{content:"↗ ";opacity:.7}
+.links a:hover{background:var(--accent-soft);border-color:var(--accent)}
+.tag.g{background:var(--warn-soft);color:var(--warn)}
+@media print{.topbar button{display:none}.sec{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Trustworthy Generative AI: course summary &amp; checklist</h1>
+<p class="sub">ESILV · Data &amp; AI major · S7 · module MESIIN475926 (2 ECTS) · Didier Parisot · pack <code>2026-10-14-students-1</code>. Built from every file in <code>esilv-student-2026-10-14/</code>, as of 21 Oct 2026.</p>
+
+<div class="callout now"><strong>Today is TD 1 (21 Oct).</strong> Lecture 8:30–11:30 on site, lab 14:00–18:30. Prep is done: <code>.venv</code> exists and <code>ready-for-td1.txt</code> shows 4 local checks + 5/5 models <strong>[OK]</strong> (Python 3.14.8). Nothing from TD 1 itself is done yet: <code>reference-td1.csv</code> is still blank, there are no traces, no Git repo.</div>
+
+<h2>1. What the module is about</h2>
+<p><strong>Big idea:</strong> top models are nearly always right but expensive and rationed. Cheap models make more mistakes. The module teaches two skills:</p>
+<ol>
+  <li><strong>Routing</strong>: send each request to the <em>cheapest model that can still handle it</em>, using an automatic rule.</li>
+  <li><strong>Quorum (k-of-n vote)</strong>: when an answer carries consequences, ask several models, keep the answer only if a strict majority agrees, and <em>abstain</em> otherwise. Then check the result independently.</li>
+</ol>
+<div class="grid">
+  <div class="card stat"><div class="k">Guiding case</div><div class="v">Text-to-SQL on a shop DB</div><p class="sub">Each model returns one SQLite <code>SELECT</code>. The query runs read-only and its value is compared with your own reference.</p></div>
+  <div class="card stat"><div class="k">Database</div><div class="v"><code>data/boutique.sqlite</code></div><p class="sub">5 products, 59 customers, 221 orders / 397 lines. Never modify it. SHA-256 <code>0077e235…3398fec2</code></p></div>
+  <div class="card stat"><div class="k">Questions</div><div class="v">20 (C01–C20)</div><p class="sub">Families: period, age on a reference date, age at the time of the order, product list, and combinations of these.</p></div>
+  <div class="card stat"><div class="k">Team</div><div class="v">Sub-group of 8 (A–H)</div><p class="sub">One shared public repo and one shared mark. About 200 students in 7 groups of 32.</p></div>
+</div>
+
+<h3>SQL conventions (binding for you and for the models)</h3>
+<ul>
+  <li>Revenue = <code>SUM(quantity_product * price)</code>, integer <strong>euro cents excl. VAT</strong>. Output is one row with one column named <code>revenue_cents</code>.</li>
+  <li>A period includes its start and excludes its end: <code>date &gt;= start AND date &lt; end</code>.</li>
+  <li>Age means <strong>completed</strong> age, computed with month and day, never as a plain difference of years. "On reference date X" is a different question from "at the time of the order".</li>
+  <li>Return <strong>0, not NULL</strong> when nothing matches (use <code>COALESCE(SUM(...),0)</code>).</li>
+</ul>
+
+<h3>The five required models (14 Oct selection)</h3>
+<div class="tablewrap"><table>
+<tr><th>Member</th><th>Provider</th><th>Exact ID</th><th>Params</th><th>Paid-route price in/out (USD/M, 5 Oct)</th></tr>
+<tr><td>A</td><td>Groq</td><td><code>openai/gpt-oss-120b</code></td><td>reasoning_effort low, 1024</td><td>0.15 / 0.60</td></tr>
+<tr><td>B</td><td>Groq</td><td><code>openai/gpt-oss-20b</code></td><td>reasoning_effort low, 1024</td><td>0.075 / 0.30</td></tr>
+<tr><td>C</td><td>OpenRouter</td><td><code>cohere/north-mini-code:free</code></td><td>reasoning off, 1024</td><td>N/A (no paid route documented)</td></tr>
+<tr><td>D</td><td>Groq</td><td><code>qwen/qwen3.8-27b</code></td><td>reasoning_effort none, 1000</td><td>0.80 / 4.00</td></tr>
+<tr><td>E</td><td>OpenRouter</td><td><code>dots-studio/dots-3-note-preview:free</code></td><td>reasoning off, 1024</td><td>N/A (no paid route documented)</td></tr>
+</table></div>
+<p class="sub">Members F, G and H cross-check the references, merge the traces and prepare the summaries. C and E must use <strong>two different personal OpenRouter accounts</strong>. The TD 2 vote panel is fixed at 120b, Cohere and Qwen (Dots is <em>not</em> in it).</p>
+
+<h3>Batch rules</h3>
+<ul>
+  <li>Base batch: <strong>100 cells</strong> (60 Groq + 40 OpenRouter), 20 per operator. Access checks and retries are counted separately. Aim to keep a margin of 5 extra calls per operator.</li>
+  <li>One request in flight per sub-group, at least 3 s between requests, temperature 0, output capped at 1024 tokens, 45 s timeout.</li>
+  <li>At most <strong>1 retry per cell</strong> (2 attempts across runs), only for 429 with Retry-After ≤ 60 s, a timeout, or a 5xx error. Errors 400–404 are recorded and not retried.</li>
+  <li>Changing the prompt or the reference starts a new experiment: use new <code>--state</code>/<code>--out</code> files and keep the old ones.</li>
+  <li>Each <code>check_access.py</code> run costs 3 Groq + 2 OpenRouter calls. A new API key does <strong>not</strong> add capacity.</li>
+  <li>TD 2 and TD 3 need <strong>no new network calls</strong>: they work on the saved traces.</li>
+  <li>If access fails, the instructor supplies <code>traces-reelles.jsonl</code> and you run <code>--replay</code>. Replay lines are labelled <code>nature=replay</code> and lose no points.</li>
+</ul>
+
+<h2>2. Calendar</h2>
+<div class="tablewrap"><table>
+<tr><th>Date</th><th>Lecture (morning)</th><th>Lab (afternoon)</th><th>Outcomes marked</th></tr>
+<tr><td><strong>21 Oct</strong> <span class="pill today">today</span></td><td>L1 on site 8:30–11:30: models by the hundred, a finite budget</td><td>TD 1, 14:00–18:30: compare 5 models on 20 questions</td><td>R1, R2, R3</td></tr>
+<tr><td><strong>18 Nov</strong></td><td>L2 online 8:30–11:00: quorum and routing</td><td>TD 2, 13:30–18:00: k-of-n vote, wrong consensus, routing rule</td><td>Q1, Q2, Q3</td></tr>
+<tr><td><strong>11 Dec</strong></td><td>L3 online 8:30–11:00: cost and decision, MCP</td><td>TD 3, 13:30–18:00: cost table, decision, 3 slides, oral presentation</td><td>C1, C2, C3 + H1, H2</td></tr>
+</table></div>
+<p class="sub">Hand-in after <em>each</em> TD on Moodle (learning.devinci.fr, "Next Generation AI"): full repo URL, the full commit hash and a link to <code>reports/tdN.md</code> at that commit. Keep earlier entries. Deadlines are announced on Moodle.</p>
+
+<h2>3. How the mark is computed (/20)</h2>
+<div class="tablewrap"><table>
+<tr><th>Code</th><th>Outcome</th><th>What level 2 requires</th><th class="num">Pts</th></tr>
+<tr><td>R1</td><td>Independent, checked reference</td><td>20 correct values, convention explained, independent check shown</td><td class="num">2</td></tr>
+<tr><td>R2</td><td>One trace line per call</td><td>Automatic rows with all attempts kept, plus explaining a selected trace, its prompt fingerprint, and any missing measurement or retry</td><td class="num">2</td></tr>
+<tr><td>R3</td><td>Cause of a failure</td><td>Cause read from the SQL or HTTP status, and a failed access told apart from a wrong answer</td><td class="num">2</td></tr>
+<tr><td>Q1</td><td>A vote that abstains</td><td>Strict majority or abstention, an unavailable member stays in n, a duplicate provider/model pair counts once</td><td class="num">2</td></tr>
+<tr><td>Q2</td><td>Wrong consensus explained</td><td>At least 2 models give the same wrong value, plus the reference, the declared quorum result, the SQL cause, and an independent check that would catch it</td><td class="num">2</td></tr>
+<tr><td>Q3</td><td>Routing rule tied to TD 1</td><td>One line per question family citing its TD 1 cell, plus a fallback (next model, defer, or abstain)</td><td class="num">2</td></tr>
+<tr><td>C1</td><td>Two cost columns that don't mix</td><td>Real spend and API-equivalent kept apart, prices dated and sourced, N/A and coverage shown, no subtotal passed off as a total</td><td class="num">2</td></tr>
+<tr><td>C2</td><td>Decision from the cost of an error</td><td>Named use case, cost per question, and the error frequency observed in the batch</td><td class="num">2</td></tr>
+<tr><td>C3</td><td>Written limits</td><td>Simulator assumptions, and the fact that 20 questions give no general error rate, no ranking and no quorum guarantee</td><td class="num">2</td></tr>
+<tr><td>H1</td><td>Replayable repo</td><td>Artefacts from all 3 TDs, and every figure traceable to a trace line</td><td class="num">1</td></tr>
+<tr><td>H2</td><td>Video</td><td>Shows one call, its verdict and the vote</td><td class="num">1</td></tr>
+<tr><th colspan="3">Total (the oral presentation then adjusts it by −1 to +1)</th><th class="num">20</th></tr>
+</table></div>
+<p>Each outcome is marked 0, 1 or 2 <em>during the session</em>, from what you show on screen, with no half points. If the evidence for a 2 is missing from the final repo, it drops to 1, and no mark ever goes up afterwards. Weak model results still earn full marks: the method is graded, not how accurate the models are. All 8 members get the same mark. Prompts are graded, and AI coding help is allowed if you disclose it.</p>
+
+<h2>4. Things to watch out for</h2>
+<div class="callout bad"><strong>Template mismatch:</strong> row 3 of <code>five-model-summary-en.csv</code> (in both <code>kit-td1/</code> and <code>templates/</code>) lists <code>inclusionai/ling-3.0-flash-sante:free</code>, but the required model is <code>cohere/north-mini-code:free</code>. Fix the row and ask the instructor to confirm.</div>
+<div class="callout warn"><strong>Oral length conflict:</strong> TD 3 says 20 min per sub-group, while Lecture 3 says 25 min. The oral is also still a proposal pending school approval, and could move to the week of 14 Dec.</div>
+<div class="callout warn"><strong>Missing vs zero:</strong> an absent measurement stays <em>empty</em> or N/A, never 0. Real spend can be 0 only with dated evidence of the free plan. If <code>tokens_completion</code> already includes reasoning tokens, don't add them again.</div>
+<div class="callout warn"><strong>Repo hygiene:</strong> the repo must be public, with no keys, no <code>.env</code> and no screenshots that show credentials. Keep the kit <code>.gitignore</code> at the repo root. It also ignores <code>ready-for-td1.txt</code> and <code>.idea/</code>.</div>
+<div class="callout warn"><strong>Reference independence:</strong> reference values must come from SQL you ran plus an independent cross-check (CSV or a second query). Never take a value from an LLM answer.</div>
+
+<h2>5. Checklist</h2>
+<div class="topbar">
+  <strong id="pct">0%</strong><div class="bar"><i id="barfill"></i></div>
+  <span class="sub" id="cnt"></span>
+  <button id="expand">Expand all</button><button id="reset">Reset</button>
+</div>
+<div id="checklist"></div>
+
+<h2>6. Command cheat sheet (PowerShell, from <code>kit-td1</code>)</h2>
+<pre>.venv\Scripts\Activate.ps1                     # or call .venv\Scripts\python.exe directly
+$env:GROQ_API_KEY = "gsk_..."; $env:OPENROUTER_API_KEY = "sk-or-v1-..."
+python verify-data.py                          # offline integrity, last object "ok": true
+python check_access.py --no-network            # local checks only, costs 0 calls
+python skeleton-multi-llm-en.py --demo         # offline demo, 3 simulated models
+
+# TD 1, one operator (example: member A)
+python skeleton-multi-llm-en.py --run --models groq:openai/gpt-oss-120b --cases C01,C03 --state state-A.jsonl --out traces-A.csv
+python skeleton-multi-llm-en.py --rates --state state-A.jsonl
+python skeleton-multi-llm-en.py --replay traces-reelles.jsonl   # fallback only
+
+# TD 2
+python atelier-vote.py                                     # 4 synthetic tests
+python atelier-vote.py --traces traces-td1.csv --case C02  # repeat for C01..C20
+python atelier-routage.py                                  # 7 scenarios
+python atelier-routage.py --scenario deferrable</pre>
+
+<h3>Cost formula (TD 3)</h3>
+<pre>API-equivalent (USD excl. tax) = (input_tokens × in_price + output_tokens × out_price) / 1,000,000
+e.g. gpt-oss-120b, 2,000 in / 300 out → (2000×0.15 + 300×0.60)/1e6 = 0.00048 USD
+Annual: 20 people × 10 req/day × 20 days × 12 months = 48,000 requests
+A check is worth it when: check cost per question &lt; error cost × error frequency</pre>
+
+<p class="sub">Key files: <a href="esilv-student-2026-10-14/before-td1-en.html">before-td1</a> · <a href="esilv-student-2026-10-14/kit-td1/enonce-td1-en.html">TD 1</a> · <a href="esilv-student-2026-10-14/kit-td1/enonce-td2-en.html">TD 2</a> · <a href="esilv-student-2026-10-14/kit-td1/enonce-td3-en.html">TD 3</a> · <a href="esilv-student-2026-10-14/kit-td1/consigne-etudiante-en.html">protocol</a> · <a href="esilv-student-2026-10-14/kit-td1/questions-td1-en.html">questions</a> · <a href="esilv-student-2026-10-14/kit-td1/methode-cout-en.html">cost method</a> · <a href="esilv-student-2026-10-14/assessment-en.html">assessment</a> · <a href="esilv-student-2026-10-14/submission-en.html">hand-in</a> · <a href="esilv-student-2026-10-14/templates/README-en.html">templates</a> · <a href="https://storage.googleapis.com/docs.g.quanticfactory.io/ESILV/next-generation-ai/latest/index.html">live site</a> (the reference version, updated in place)</p>
+</div>
+
+<script>
+const DATA = [
+ {id:"prep", title:"0 · Preparation (deadline 18 Oct)", items:[
+  ["Extract student ZIP, keep kit files together", "", true],
+  ["Python ≥ 3.10 + .venv + requests installed", "Detected: .venv in kit-td1, Python 3.14.8", true],
+  ["Groq Free account + key (no payment method)", "", true],
+  ["OpenRouter account + key (no credits bought)", "", true],
+  ["Keys set as env vars only, never in a file", "", true],
+  ["check_access.py run once, output saved to ready-for-td1.txt (all OK)", "Detected: 4 local + 5/5 models OK", true],
+  ["Note remaining Groq / OpenRouter allowance for TD 1", "Read the account dashboards before running"],
+  ["Read TD 1 assignment, protocol and the 20 questions", ""]
+ ]},
+ {id:"repo", title:"1 · Group repository (set up now, used TD 1→3)", items:[
+  ["Create ONE public Git repo for the sub-group; check it opens without signing in", "", false, "H1"],
+  ["Copy kit .gitignore to the repo root", "Keeps .env, keys, .venv, caches, ready-for-td1.txt out"],
+  ["README.md: sub-group, 8 members, pack version, DB hash, environment, commands, work done, open blocks", ""],
+  ["prompts-en.md: system message + user template verbatim (from SYSTEM_PROMPT / build_prompt in skeleton)", "Graded. Also store the prompts used for coding help"],
+  ["contributions-en.csv: who did what, who cross-checked", "templates/contributions-en.csv"],
+  ["Scan the repo for secrets before every push", ""]
+ ]},
+ {id:"td1a", title:"2 · TD 1 in the room (21 Oct)", items:[
+  ["14:00 Assign roles A–E (models) and F–H (checks/merge); record allowances", "C and E use two different OpenRouter accounts"],
+  ["Split C01–C20 among the 8 members (2–3 each)", ""],
+  ["Write each reference SELECT → one row, column revenue_cents", "Follow the conventions: half-open period, completed age, cents, 0 not NULL", false, "R1"],
+  ["Independently cross-check each reference (CSV or second query, another member)", "", false, "R1"],
+  ["Fill reference-td1.csv (case_id, sql, revenue_cents) + who checked which", "", false, "R1"],
+  ["Show 20 values to the instructor; fix any flagged mismatch BEFORE running those questions", "", false, "R1"],
+  ["Each operator runs their 20 cells with --models/--cases, own --state/--out", "One request at a time, pass the turn, at most 1 retry/cell", false, "R2"],
+  ["Count initial calls, access checks and retries separately", "", false, "R2"],
+  ["Merge raw CSVs under one header → traces-td1.csv; keep every source CSV and JSONL", "Missing measurements left empty; nature real/replay/simulation kept distinct", false, "R2"],
+  ["Be ready to explain an instructor-picked trace: prompt fingerprint, attempts, a missing measurement or retry", "", false, "R2"],
+  ["Read failures: broken convention / invalid SQL / truncated output / refused access", "Use the returned SQL and HTTP status as evidence", false, "R3"],
+  ["Explain one failed ACCESS and how it differs from a WRONG ANSWER (instructor example if none)", "", false, "R3"],
+  ["Fill model-question-comparison-en.csv: 100 rows (one final row per model×question), explanation + trace pointer", "Last attempt decides; an unfinished cell is not_executed with its reason"],
+  ["Show the models×questions pivot at the plenary (a view only, not entered twice)", ""],
+  ["Fill five-model-summary-en.csv: index + source/date, exact-model paid price + source/date, access used, results per family, limits", "N/A with a reason for Cohere and Dots. Fix the wrong row 3 model ID!"],
+  ["Plenary: note the questions most models miss, and which convention is involved", ""],
+  ["Get R1/R2/R3 marked; name who prepares TD 2 (atelier-vote.py, routing rule)", ""]
+ ]},
+ {id:"td1b", title:"3 · TD 1 hand-in", items:[
+  ["reports/td1.md: what was attempted and done, successes, failures + links, causes vs hypotheses, limits, contributions, next steps", "Label any replayed or synthetic example"],
+  ["Commit reference-td1.csv, traces-td1.csv/.jsonl + raw files, both summaries, prompts-en.md, README", ""],
+  ["Test the documented commands from a fresh clone", ""],
+  ["Moodle entry: repo URL + full commit hash + link to reports/td1.md at that commit (optional tag td1-submission)", ""]
+ ]},
+ {id:"td2", title:"4 · TD 2 (18 Nov): vote + routing", items:[
+  ["Implement Orchestrateur.vote_k_sur_n in skeleton-multi-llm-en.py", "Only executed votes with a value count; an error stays in n; enforce n//2 < k <= n; duplicate provider/model → ValueError; return the dict contract; never invent a value", false, "Q1"],
+  ["python atelier-vote.py passes the 4 synthetic tests", "", false, "Q1"],
+  ["Fill voting-tests-en.csv: agreement, disagreement, unavailable member, duplicate route", "", false, "Q1"],
+  ["Run atelier-vote.py --traces traces-td1.csv --case Cxx for all 20 questions", ""],
+  ["Table of 20 vote decisions: consensus/abstention, value, votes, agrees with reference?", ""],
+  ["Find a wrong consensus (≥2 models, same wrong value) or use DEMO-VOTE / instructor case", "State its nature (real / historical / synthetic)", false, "Q2"],
+  ["Explain it: reference, declared panel and k-of-n result, cause in the SQL, an independent check that detects it", "Run both variants of DEMO-VOTE (> vs >=) on the toy table if you use it", false, "Q2"],
+  ["Write the one-page routing rule (templates/routing-rule-en.md), one line per family", "Cheapest model that is correct on the family, the check for each use, what to do if unavailable (next / defer / abstain)", false, "Q3"],
+  ["Each rule line cites the TD 1 cells that justify it", "", false, "Q3"],
+  ["Run atelier-routage.py (7 scenarios): save the output BEFORE adapting", ""],
+  ["Adapt RESOURCES and choose() to your rule; save the output AFTER adapting", ""],
+  ["Get Q1/Q2/Q3 marked", ""]
+ ]},
+ {id:"td2b", title:"5 · TD 2 hand-in", items:[
+  ["Commit the completed vote + driver, panel/threshold, test outputs, 20-decision table, wrong-consensus write-up, rule, simulator outputs", ""],
+  ["Update prompts-en.md if the prompts changed", ""],
+  ["reports/td2.md (keep td1.md)", ""],
+  ["Moodle: new entry with URL + commit hash + report link; keep the TD 1 entry", ""]
+ ]},
+ {id:"td3", title:"6 · TD 3 (11 Dec): cost + decision", items:[
+  ["cost-calculation-en.csv: per attempt, tokens × dated, sourced exact-model price", "Count output once (reasoning not double-counted)", false, "C1"],
+  ["configuration-comparison-en.csv: cheapest correct single model, best single model, 2-of-3, 3-of-5 (if possible), your rule", "Correct / abstentions / errors, calls incl. retries, tokens", false, "C1"],
+  ["Keep real spend and API-equivalent in separate columns; N/A + coverage (known/total calls) when incomplete", "A subtotal is labelled as a subtotal. Replay lines are not today's consumption", false, "C1"],
+  ["Name a use case (dashboard / figure shown to the customer / amount paid / other) and what an error costs in it", "", false, "C2"],
+  ["Recommend a configuration citing cost per question and the error frequency seen in the batch", "", false, "C2"],
+  ["Write the limits: what 20 questions don't cover, simulator assumptions, no general rate / ranking / quorum guarantee", "", false, "C3"],
+  ["3 slides: (1) models compared + failure causes + portfolio sheet; (2) quorum + wrong consensus + its detection; (3) recommended config + error cost + rule + 2-column cost + limits", ""],
+  ["Prepare the oral (20–25 min, each member presents one part); every figure must point to a trace line", "Oral adjusts the total by ±1"],
+  ["Record the demo video: one question → returned SQL → sandbox result → verdict → vote (label it if replayed)", "", false, "H2"]
+ ]},
+ {id:"final", title:"7 · Final hand-in (after TD 3)", items:[
+  ["Repo holds all 3 TDs' artefacts; every figure presented is traceable to a line", "", false, "H1"],
+  ["reports/td3.md (keep td1/td2)", ""],
+  ["Video attached to the repo", "", false, "H2"],
+  ["Run from a fresh clone; another member can find the trace behind each figure", ""],
+  ["Final secrets scan; repo still public", ""],
+  ["Moodle: final entry with URL + commit hash + report link", ""]
+ ]}
+];
+// Doc references: [label, path relative to the student pack]
+const B = "esilv-student-2026-10-14/";
+const DOCS = {
+ before:["Before TD 1","before-td1-en.html"], kitreadme:["Kit README","kit-td1/README.html"],
+ envPy:["Env guide §1 Python","kit-td1/guide-environnement-etudiant-en.html#section-2"],
+ envAcc:["Env guide §2 Accounts","kit-td1/guide-environnement-etudiant-en.html#section-5"],
+ envCheck:["Env guide §4 Check + errors","kit-td1/guide-environnement-etudiant-en.html#section-7"],
+ checkpy:["check_access.py","kit-td1/check_access.py"], ready:["ready-for-td1.txt","kit-td1/ready-for-td1.txt"],
+ proto:["Protocol","kit-td1/consigne-etudiante-en.html"],
+ protoTask:["Protocol §1 Conventions","kit-td1/consigne-etudiante-en.html#section-2"],
+ protoAcc:["Protocol §2 Accounts","kit-td1/consigne-etudiante-en.html#section-3"],
+ protoCall:["Protocol §3 Call rules","kit-td1/consigne-etudiante-en.html#section-4"],
+ protoBatch:["Protocol §5 Allocation","kit-td1/consigne-etudiante-en.html#section-6"],
+ protoFallback:["Protocol §6 Fallback","kit-td1/consigne-etudiante-en.html#section-7"],
+ q:["20 questions","kit-td1/questions-td1-en.html"], schema:["schema.sql","kit-td1/schema.sql"],
+ dataCsv:["orders.csv","kit-td1/data/orders.csv"],
+ td1:["TD 1","kit-td1/enonce-td1-en.html"],
+ td1Open:["TD 1 Opening","kit-td1/enonce-td1-en.html#section-5"],
+ td1S1:["TD 1 Step 1","kit-td1/enonce-td1-en.html#section-6"],
+ td1S2:["TD 1 Step 2","kit-td1/enonce-td1-en.html#section-7"],
+ td1S3:["TD 1 Step 3","kit-td1/enonce-td1-en.html#section-8"],
+ td1S4:["TD 1 Plenary","kit-td1/enonce-td1-en.html#section-9"],
+ td1Hand:["TD 1 Hand-in","kit-td1/enonce-td1-en.html#section-11"],
+ td2S1:["TD 2 Step 1 Vote","kit-td1/enonce-td2-en.html#section-5"],
+ td2S2:["TD 2 Step 2 Wrong consensus","kit-td1/enonce-td2-en.html#section-6"],
+ td2Demo:["DEMO-VOTE case","kit-td1/enonce-td2-en.html#section-7"],
+ td2S3:["TD 2 Step 3 Routing","kit-td1/enonce-td2-en.html#section-8"],
+ td2Exp:["TD 2 Expected","kit-td1/enonce-td2-en.html#section-10"],
+ td2Hand:["TD 2 Hand-in","kit-td1/enonce-td2-en.html#section-11"],
+ td3S1:["TD 3 Step 1 Configs","kit-td1/enonce-td3-en.html#section-5"],
+ td3S2:["TD 3 Step 2 Decision + slides","kit-td1/enonce-td3-en.html#section-6"],
+ td3S3:["TD 3 Step 3 Oral","kit-td1/enonce-td3-en.html#section-7"],
+ td3Hand:["TD 3 Hand-in","kit-td1/enonce-td3-en.html#section-9"],
+ costTok:["Cost §1 Tokens","kit-td1/methode-cout-en.html#section-3"],
+ costPrice:["Cost §2 Prices","kit-td1/methode-cout-en.html#section-4"],
+ costCall:["Cost §3 One call","kit-td1/methode-cout-en.html#section-5"],
+ costConf:["Cost §4 Configuration","kit-td1/methode-cout-en.html#section-6"],
+ costErr:["Cost: common errors","kit-td1/methode-cout-en.html#section-9"],
+ sub:["Hand-in page","submission-en.html"],
+ sub1:["Hand-in: after TD 1","submission-en.html#section-3"],
+ sub2:["Hand-in: after TD 2","submission-en.html#section-4"],
+ sub3:["Hand-in: after TD 3","submission-en.html#section-5"],
+ subRep:["Hand-in: report","submission-en.html#section-6"],
+ subClean:["Hand-in: public & clean","submission-en.html#section-7"],
+ subBefore:["Hand-in: before each","submission-en.html#section-9"],
+ as1:["Grading TD 1","assessment-en.html#section-3"], as2:["Grading TD 2","assessment-en.html#section-4"],
+ as3:["Grading TD 3","assessment-en.html#section-5"], asH:["Grading hand-in","assessment-en.html#section-6"],
+ refcsv:["reference-td1.csv","kit-td1/reference-td1.csv"], skel:["skeleton-multi-llm-en.py","kit-td1/skeleton-multi-llm-en.py"],
+ cmpcsv:["comparison CSV","kit-td1/model-question-comparison-en.csv"], fivecsv:["five-model CSV","kit-td1/five-model-summary-en.csv"],
+ example:["Comparison example","kit-td1/comparison-example-en.html"],
+ port:["Portfolio","kit-td1/portefeuille-modeles-en.html"], portcsv:["Portfolio CSV","kit-td1/portefeuille-modeles-2026-09-28.csv"],
+ votepy:["atelier-vote.py","kit-td1/atelier-vote.py"], routepy:["atelier-routage.py","kit-td1/atelier-routage.py"],
+ routTmpl:["Routing worksheet","templates/routing-rule-en.html"], votcsv:["voting-tests CSV","templates/voting-tests-en.csv"],
+ contrib:["contributions CSV","templates/contributions-en.csv"], costcsv:["cost-calculation CSV","templates/cost-calculation-en.csv"],
+ confcsv:["configuration CSV","templates/configuration-comparison-en.csv"], gitignore:[".gitignore","kit-td1/.gitignore"],
+ cm2:["Lecture 2","lectures/cm2-en.html"], cm3:["Lecture 3","lectures/cm3-en.html"]
+};
+const LINKS = {
+ prep:[["before"],["envPy"],["envAcc","protoAcc"],["envAcc","protoAcc"],["envAcc"],["envCheck","checkpy","ready"],["protoBatch","envCheck"],["td1","proto","q"]],
+ repo:[["sub","subClean"],["gitignore","subClean"],["sub1","kitreadme"],["skel","sub1"],["contrib"],["subClean","gitignore"]],
+ td1a:[["td1Open","protoBatch"],["q","td1S1"],["protoTask","q","schema","td1S1"],["td1S1","dataCsv"],["refcsv","td1S1"],["td1S1","as1"],
+  ["td1S2","protoBatch","protoCall","skel"],["protoBatch"],["td1S2","protoFallback"],["td1S3","as1"],["td1S3","cm2"],["as1","envCheck"],
+  ["cmpcsv","example","td1S3"],["example","td1S4"],["fivecsv","example","port","portcsv","costPrice"],["td1S4"],["as1","votepy"]],
+ td1b:[["subRep","td1Hand"],["sub1"],["subBefore"],["td1Hand","sub"]],
+ td2:[["skel","td2S1"],["votepy","td2S1"],["votcsv","sub2"],["votepy","td2S1"],["td2S1","td2Exp"],["td2S2","td2Demo"],["td2S2","td2Demo","cm2"],
+  ["routTmpl","td2S3","cm2"],["td2S3","cmpcsv"],["routepy","td2S3"],["routepy","td2S3"],["as2"]],
+ td2b:[["sub2"],["sub2"],["subRep","td2Hand"],["td2Hand"]],
+ td3:[["costcsv","costTok","costPrice","costCall"],["confcsv","costConf","td3S1"],["costConf","td3S1","costErr"],["td3S2","cm3"],["td3S2","as3"],
+  ["td3S2","as3"],["td3S2","cm3"],["td3S3"],["sub3","asH"]],
+ final:[["sub3","asH"],["subRep","td3Hand"],["asH"],["subBefore"],["subClean"],["td3Hand"]]
+};
+const linksHtml = (sec, i) => {
+  const keys = (LINKS[sec] || [])[i] || [];
+  if (!keys.length) return "";
+  return `<div class="links">` + keys.map(k => {
+    const [label, path] = DOCS[k];
+    return `<a href="${B}${path}" target="_blank" rel="noopener">${esc(label)}</a>`;
+  }).join("") + `</div>`;
+};
+const KEY = "ngai-checklist-v1";
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch(e) { state = {}; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} };
+const root = document.getElementById("checklist");
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+DATA.forEach(sec => {
+  const d = document.createElement("details");
+  d.className = "sec"; d.open = sec.id === "repo" || sec.id === "td1a";
+  const sum = document.createElement("summary");
+  sum.innerHTML = `<span>${esc(sec.title)}</span><span class="count"></span>`;
+  d.appendChild(sum);
+  const ul = document.createElement("ul");
+  sec.items.forEach(([t, desc, def, tag], i) => {
+    const id = sec.id + "-" + i;
+    if (!(id in state)) state[id] = !!def;
+    const li = document.createElement("li");
+    li.innerHTML = `<label><input type="checkbox" data-id="${id}"><span><span class="t">${esc(t)}${tag ? ` <span class="tag${/^[RQC]/.test(tag)?"":" g"}">${tag}</span>` : ""}</span>${desc ? `<span class="d">${esc(desc)}</span>` : ""}</span></label>${linksHtml(sec.id, i)}`;
+    const cb = li.querySelector("input");
+    cb.checked = state[id];
+    li.classList.toggle("done", cb.checked);
+    cb.addEventListener("change", () => { state[id] = cb.checked; li.classList.toggle("done", cb.checked); save(); update(); });
+    ul.appendChild(li);
+  });
+  d.appendChild(ul);
+  root.appendChild(d);
+});
+
+function update(){
+  let all = 0, done = 0;
+  root.querySelectorAll(".sec").forEach(sec => {
+    const boxes = sec.querySelectorAll("input");
+    const n = [...boxes].filter(b => b.checked).length;
+    sec.querySelector(".count").textContent = `${n}/${boxes.length}`;
+    all += boxes.length; done += n;
+  });
+  const p = Math.round(100 * done / all);
+  document.getElementById("pct").textContent = p + "%";
+  document.getElementById("barfill").style.width = p + "%";
+  document.getElementById("cnt").textContent = `${done} of ${all} done`;
+}
+document.getElementById("expand").onclick = e => {
+  const secs = root.querySelectorAll(".sec"); const open = ![...secs].every(s => s.open);
+  secs.forEach(s => s.open = open); e.target.textContent = open ? "Collapse all" : "Expand all";
+};
+document.getElementById("reset").onclick = () => {
+  if (!confirm("Reset all checkboxes to defaults?")) return;
+  try { localStorage.removeItem(KEY); } catch(e) {}
+  location.reload();
+};
+update();
+</script>
+</body>
+</html>
