@@ -1,0 +1,10 @@
+cell_id,provider,model_requested,model_returned,case_id,question,prompt_sha256,sql,value,reference,verdict,verdict_detail,http_status,error,latency_ms,tokens_prompt,tokens_completion,tokens_reasoning,cost_native,attempts,date_utc,nature
+openrouter:cohere/north-mini-code:free:C01,openrouter,cohere/north-mini-code:free,cohere/north-mini-code:free,C01,"What is the revenue excluding VAT, in euro cents, of the orders placed from 2026-03-01 00:00:00 to 2026-06-01 00:00:00?",d25f63730bdd4980e31c3e5a449f59f3410bcee3a2cfc132d8f38efab03b1bdd,"SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN product p ON o.product_id = p.product_id
+WHERE o.date >= '2026-03-01 00:00:00' AND o.date < '2026-06-01 00:00:00';",792800,792800,correct,,200,,8464.6,557,75,0,0,1,2026-10-21 13:24:13,real
+openrouter:cohere/north-mini-code:free:C03,openrouter,cohere/north-mini-code:free,cohere/north-mini-code:free,C03,"What is the revenue excluding VAT, in euro cents, of products a, b and c only, for orders placed from 2026-01-01 00:00:00 to 2026-07-01 00:00:00?",5d8e7c01aa0646ca4a352456f4abb4665fc48e546a82767d6827a905d70d21be,"SELECT COALESCE(SUM(o.quantity_product * p.price), 0) AS revenue_cents
+FROM orders o
+JOIN product p ON o.product_id = p.product_id
+WHERE o.product_id IN ('a','b','c')
+  AND o.date >= '2026-01-01 00:00:00' AND o.date < '2026-07-01 00:00:00';",936350,936350,correct,,200,,1793.7,565,88,0,0,1,2026-10-21 13:24:17,real
