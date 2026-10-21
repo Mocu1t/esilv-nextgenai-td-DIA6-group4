@@ -167,8 +167,15 @@ def main():
         print(f"{mismatches} mismatch(es): reference-td1.csv not written.", file=sys.stderr)
         return 1
     if not args.check:
+        # Keep the checked_by names already entered by the sub-group.
+        checked_by = {}
+        if OUT.exists():
+            with open(OUT, newline="", encoding="utf-8") as f:
+                checked_by = {r["case_id"]: r.get("checked_by") or "" for r in csv.DictReader(f)}
+        for row in rows:
+            row["checked_by"] = checked_by.get(row["case_id"], "")
         with open(OUT, "w", newline="", encoding="utf-8") as f:
-            writer = csv.DictWriter(f, fieldnames=["case_id", "sql", "revenue_cents"])
+            writer = csv.DictWriter(f, fieldnames=["case_id", "sql", "revenue_cents", "checked_by"])
             writer.writeheader()
             writer.writerows(rows)
         print(f"20/20 agree: written to {OUT.name}")
