@@ -1,0 +1,3 @@
+# Raw traces are evidence: keep their bytes exactly as written (no CRLF/LF conversion).
+*.csv   -text
+*.jsonl -text
