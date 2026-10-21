@@ -15,6 +15,40 @@
 
 Roles rotate in TD 2 and TD 3.
 
+### Environment
+
+Python 3.10 or later (run with 3.12.14), standard library only (`sqlite3` 3.53.4); Windows PowerShell. API keys only in environment variables, never in the repository: `GROQ_API_KEY` and `OPENROUTER_API_KEY` (see [guide-environnement-etudiant-en.md](guide-environnement-etudiant-en.md); `cd_load-env.ps1` loads them from a `cd_.env` file kept **outside** the clone). Models and parameters are read from [modeles-autorises.json](modeles-autorises.json); the five proposed models were used, none replaced.
+
+### Replay the TD 1 work from a fresh clone (no network, no key)
+
+```powershell
+git clone https://github.com/Mocu1t/esilv-nextgenai-td-DIA6-group4
+cd esilv-nextgenai-td-DIA6-group4
+python check_access.py --no-network          # Python, database hash, CSV fingerprints
+python cd_build_references.py --check        # 20 references: SQL on the base = independent CSV computation
+python cd_check_traces.py A=traces-A.csv:state-A.jsonl B=traces-B.csv:state-B.jsonl C=traces-C.csv:state-C.jsonl D=traces-D-corrected.csv:state-D-corrected.jsonl E=traces-E.csv:state-E.jsonl E=traces-E-Mathias.csv:state-E-Mathias.jsonl
+foreach ($s in "A","B","C","D-corrected","E") { python skeleton-multi-llm-en.py --rates --state "state-$s.jsonl" }
+python skeleton-multi-llm-en.py --replay state-E.jsonl --state replay-E.jsonl --out replay-E.csv   # re-runs the stored SQL offline (nature = replay)
+python cd_build_comparison.py traces-A.csv traces-B.csv traces-C.csv traces-D-corrected.csv traces-E.csv --extra traces-E-Mathias.csv
+```
+
+The last command rebuilds `traces-td1.csv`/`.jsonl`, `model-question-comparison-en.csv` (explanations kept) and `cd_pivot-td1.md`. Run `--rates` and `--replay` on the per-operator state files: `traces-td1.jsonl` also holds the second, unscored E run, and the skeleton would mix the two E runs.
+
+The batch itself (network, keys, quota) was: `python skeleton-multi-llm-en.py --run --models <provider:model> --state state-X.jsonl --out traces-X.csv`, one operator at a time.
+
+### TD 1 status (21 October 2026)
+
+| Deliverable | File |
+|---|---|
+| References, equal to the answer key, with checker | [reference-td1.csv](reference-td1.csv) |
+| Raw traces, every attempt | [traces-td1.csv](traces-td1.csv), [traces-td1.jsonl](traces-td1.jsonl), and the per-operator `traces-*.csv` / `state-*.jsonl` |
+| Model x question comparison (100 rows) and pivot | [model-question-comparison-en.csv](model-question-comparison-en.csv), [cd_pivot-td1.md](cd_pivot-td1.md) |
+| Five-model summary | [five-model-summary-en.csv](five-model-summary-en.csv) |
+| Prompts as used (experiment and coding help) | [prompts-en.md](prompts-en.md) |
+| Session report and contributions | [reports/td1.md](reports/td1.md), [contributions-en.csv](contributions-en.csv) |
+
+Completed: 100/100 cells attempted, 99 with a final verdict. Open: `qwen/qwen3.8-27b` x C20 not executed (two HTTP 429, retry limit reached); no index/paid price documented for the two OpenRouter-only free models (N/A with reason). Files prefixed `cd_` were written with coding assistance (see [prompts-en.md](prompts-en.md)).
+
 ---
 
 # Lab kit, Trustworthy generative AI, ESILV

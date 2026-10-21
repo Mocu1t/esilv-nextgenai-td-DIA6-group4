@@ -1,0 +1,21 @@
+member,work_item,file_and_location,cross_checked_by,date
+Raphael DEMOUGE,Operator A: batch of openai/gpt-oss-120b (20 cells + 1 retry),traces-A.csv; state-A.jsonl,Mathias COUDER (cd_check_traces.py),2026-10-21
+Raphael DEMOUGE,Comparison rows and summary row for model A,model-question-comparison-en.csv (rows gpt-oss-120b); five-model-summary-en.csv (row 1),Mathias COUDER,2026-10-21
+Raphael DEMOUGE,Independent check of reference queries C18-C20,reference-td1.csv (C18-C20),instructor answer key,2026-10-21
+Carl-Edouard AUDUSSEAU,Operator B: batch of openai/gpt-oss-20b (20 cells),traces-B.csv; state-B.jsonl,Mathias COUDER (cd_check_traces.py),2026-10-21
+Carl-Edouard AUDUSSEAU,Comparison rows and summary row for model B,model-question-comparison-en.csv (rows gpt-oss-20b); five-model-summary-en.csv (row 2),Mathias COUDER,2026-10-21
+Carl-Edouard AUDUSSEAU,Independent check of reference queries C01-C04,reference-td1.csv (C01-C04),instructor answer key,2026-10-21
+Grégoire LEGROS,Operator C: batch of cohere/north-mini-code:free (20 cells),traces-C.csv; state-C.jsonl,Mathias COUDER (cd_check_traces.py),2026-10-21
+Grégoire LEGROS,Independent check of reference queries C08-C10,reference-td1.csv (C08-C10),instructor answer key,2026-10-21
+Aurelien PAYEN,Operator D: batch of qwen/qwen3.8-27b (20 cells + 5 retries after HTTP 429),traces-D-corrected.csv; state-D-corrected.jsonl,Mathias COUDER (cd_check_traces.py),2026-10-21
+Aurelien PAYEN,Independent check of reference queries C05-C07,reference-td1.csv (C05-C07),instructor answer key,2026-10-21
+Thibault ALLORY,Operator E: batch of dots-studio/dots-3-note-preview:free (20 cells; scored run),traces-E.csv; state-E.jsonl,Mathias COUDER (cd_check_traces.py),2026-10-21
+Thibault ALLORY,Independent check of reference queries C11-C13,reference-td1.csv (C11-C13),instructor answer key,2026-10-21
+Mathias COUDER,Repository set-up and .gitignore/.gitattributes,README.md; .gitattributes,sub-group,2026-10-21
+Mathias COUDER,Reference queries C01-C20 and independent CSV computation (coding assistance declared),cd_build_references.py; reference-td1.csv,each member (checked_by) and instructor answer key,2026-10-21
+Mathias COUDER,Independent check of reference queries C14-C17,reference-td1.csv (C14-C17),instructor answer key,2026-10-21
+Mathias COUDER,Verification of all raw traces and states,cd_check_traces.py,sub-group,2026-10-21
+Mathias COUDER,Merge of all attempts and comparison build (coding assistance declared),cd_build_comparison.py; traces-td1.csv; traces-td1.jsonl; cd_pivot-td1.md,sub-group,2026-10-21
+Mathias COUDER,Comparison rows (causes) and summary rows for models C D E; B families recomputed,model-question-comparison-en.csv; five-model-summary-en.csv (rows 3-5),operators C D E,2026-10-21
+Mathias COUDER,Second run of model E (unscored; overlapped the scored run),traces-E-Mathias.csv; state-E-Mathias.jsonl,Mathias COUDER (cd_check_traces.py),2026-10-21
+Mathias COUDER,Prompts as used; README replay commands; session report,prompts-en.md; README.md; reports/td1.md,sub-group,2026-10-21
