@@ -210,3 +210,45 @@ j'ai push. Que nous reste t il a faire pour finir le td1 ? y a t il des livrable
 ```text
 Oui, finissons les différents livrables. Pour les contributions, c'est ce que j'avais noté dans references-td1 : chaque autre membre s'est occupé d'un modèle, et je me suis occupé de la mise en commun et de la fusion des différents travaux
 ```
+
+## 3. TD 2 (18 November 2026)
+
+**Experiment prompt**: unchanged. TD 2 makes no new model call; the vote and the routing rule work on the stored TD 1 traces, whose fingerprints are listed in section 1.
+
+**Coding-assistance prompts** (Pair C, routing). Assistant: Claude Code (model Claude Opus 5.5), in VS Code, session of Mathias COUDER on 18 November 2026; prompts reproduced verbatim, numbering continued from section 2. Written or modified with the assistant: `cd_family_rates.py`, `atelier-routage.py` (adapted `RESOURCES` and `choose`), `reports/td2/routing-rule.md`, `reports/td2/simulator-analysis.md` and the simulator outputs `reports/td2/simulator-before.jsonl` / `simulator-after.jsonl`. The routing choices (tie-break on the price of the paid route of the same model; deterministic check on F2 even for the internal dashboard) were proposed by the assistant with their justification, then discussed and decided by the pair (prompts 21 and 22). Pairs A and B: add here any AI prompt you used, verbatim.
+
+**19.**
+
+```text
+Faisons ensemble le TD2. J'ai mis les consignes actualisées dans le pdf : "TD 2 - The quorum, then the routing rule" guide moi pas à pas
+```
+
+**20.**
+
+```text
+[answer to the assistant's question "Which pair are you in for TD 2?": Pair C (routing)]
+```
+
+**21.**
+
+```text
+what do you think is the best for both ? and how to justify it ?
+```
+
+**22.**
+
+```text
+parfait, alors alons y comme ca. réponds en francais dans cette conversation
+```
+
+**23.**
+
+```text
+peux tu exécuter ces commandes git ?
+```
+
+**24.**
+
+```text
+ajoute les prompts de cette séance dans prompts-en.md
+```
