@@ -598,9 +598,9 @@ class Orchestrateur:
                      attempts=answer.attempts, date_utc=utc_now(), nature=answer.nature)
 
     # ---------------------------------------------------------------------
-    # TO COMPLETE (TD 2): k-of-n voting
+    # Completed (TD 2): k-of-n voting
     # ---------------------------------------------------------------------
-    def vote_k_sur_n(self, traces_question: list, k: int):
+        def vote_k_sur_n(self, traces_question: list, k: int):
         """TD 2 contract. `traces_question` holds the proposals of the panel for one
         question, as built by `atelier-vote.py`. Each proposal carries `provider`,
         `model_requested`, `value` (integer cents or None) and `verdict`
@@ -624,7 +624,54 @@ class Orchestrateur:
         families, and look in your traces for a case where several models agree
         on a wrong value.
         """
-        raise NotImplementedError("vote_k_sur_n: to implement in TD 2 (see the procedure in the docstring).")
+        
+        n = len(traces_question)
+        
+        if not (n // 2 < k <= n):
+            raise ValueError("Invalid majority")
+
+        seen = set()
+        votes = {}
+
+        for trace in traces_question:
+            model_id = (trace.provider, trace.model_requested)
+
+            if model_id in seen:
+                raise ValueError("Duplicate model")
+            seen.add(model_id)
+
+            if trace.verdict != "executed" or trace.value is None:
+                continue
+
+            value = trace.value
+
+            if value not in votes:
+                votes[value] = []
+
+            votes[value].append(
+                f"{trace.provider}:{trace.model_requested}"
+            )
+
+        for value, models in votes.items():
+            if len(models) >= k:
+                return {
+                    "consensus": True,
+                    "value": value,
+                    "votes": len(models),
+                    "models": models
+                }
+
+        max_votes = max(
+            (len(models) for models in votes.values()),
+            default=0
+        )
+
+        return {
+            "consensus": False,
+            "value": None,
+            "votes": max_votes,
+            "models": []
+        }
 
 
 # ==========================================================================
