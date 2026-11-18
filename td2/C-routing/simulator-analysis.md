@@ -1,6 +1,6 @@
 # Routing simulator - before and after adaptation (TD 2, Pair C)
 
-All rows are `nature = simulation`: synthetic availability, no provider call. Raw outputs: [simulator-before.jsonl](simulator-before.jsonl) (supplied `atelier-routage.py`) and [simulator-after.jsonl](simulator-after.jsonl) (adapted to [routing-rule.md](routing-rule.md)). Replay: `python atelier-routage.py` (after); `git show 6fcdc5f:atelier-routage.py` gives the supplied version.
+All rows are `nature = simulation`: synthetic availability, no provider call. Raw outputs: [simulator-before.jsonl](simulator-before.jsonl) (supplied `atelier-routage.py`) and [simulator-after.jsonl](simulator-after.jsonl) (adapted to [routing-rule.md](routing-rule.md)). Replay from the repository root: `python td1/atelier-routage.py` (before, supplied version, unchanged) and `python td2/C-routing/atelier-routage.py` (after).
 
 ## Before: supplied resources and policy
 

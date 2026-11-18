@@ -1,6 +1,6 @@
 # Routing rule - sub-group DIA6 - Group 4 (TD 2, Pair C)
 
-Scope: the revenue questions of TD 1 (SQL written by a model, executed read-only, value checked). Evidence: the scored TD 1 run, last attempt per cell, [model-question-comparison-en.csv](../../model-question-comparison-en.csv); rates computed by [cd_family_rates.py](../../cd_family_rates.py). Twenty questions support a hypothesis for this batch, not a general error rate, a permanent ranking or a quorum guarantee.
+Scope: the revenue questions of TD 1 (SQL written by a model, executed read-only, value checked). Evidence: the scored TD 1 run, last attempt per cell, [model-question-comparison-en.csv](../../td1/model-question-comparison-en.csv); rates computed by [cd_family_rates.py](cd_family_rates.py). Twenty questions support a hypothesis for this batch, not a general error rate, a permanent ranking or a quorum guarantee.
 
 ## 1. TD 1 rates per family (correct / evaluated cells)
 

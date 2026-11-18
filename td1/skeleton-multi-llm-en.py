@@ -600,7 +600,7 @@ class Orchestrateur:
     # ---------------------------------------------------------------------
     # Completed (TD 2): k-of-n voting
     # ---------------------------------------------------------------------
-        def vote_k_sur_n(self, traces_question: list, k: int):
+    def vote_k_sur_n(self, traces_question: list, k: int):
         """TD 2 contract. `traces_question` holds the proposals of the panel for one
         question, as built by `atelier-vote.py`. Each proposal carries `provider`,
         `model_requested`, `value` (integer cents or None) and `verdict`

@@ -15,7 +15,8 @@ from collections import defaultdict
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-TYPES = {q["id"]: q["type"] for q in json.loads((HERE / "questions-td1.json").read_text(encoding="utf-8"))["questions"]}
+TD1 = HERE.parent.parent / "td1"  # TD 1 kit and results
+TYPES = {q["id"]: q["type"] for q in json.loads((TD1 / "questions-td1.json").read_text(encoding="utf-8"))["questions"]}
 FAMILIES = {  # the families of the TD 2 assignment, from the official question types
     "F1 period": "period",
     "F2 age on a reference date": "age on a reference date",
@@ -33,7 +34,7 @@ def family_of(case):
 
 
 def main():
-    with open(HERE / "model-question-comparison-en.csv", newline="", encoding="utf-8") as f:
+    with open(TD1 / "model-question-comparison-en.csv", newline="", encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
     models = list(dict.fromkeys(r["model_id"] for r in rows))
     cells = defaultdict(lambda: defaultdict(list))  # family -> model -> [(case, status)]

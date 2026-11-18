@@ -4,8 +4,9 @@
 Synthetic resources, no API call, no key.
 
 Adapted by sub-group DIA6 - Group 4 (Pair C, TD 2) to its routing rule
-(reports/td2/routing-rule.md), with coding assistance declared in prompts-en.md.
-The output of the supplied version is kept in reports/td2/simulator-before.jsonl.
+(td2/C-routing/routing-rule.md), with coding assistance declared in td2/prompts-en.md.
+The supplied version is kept runnable as td1/atelier-routage.py; its output is
+td2/C-routing/simulator-before.jsonl.
 
 Resources are the five TD 1 models and the paid route of the same model as the
 F2 champion. A model is eligible on a family only if it was correct on every

@@ -8,18 +8,18 @@ All trace rows are `nature = real`: no replayed or simulated row enters the resu
 | Step | Status | Evidence |
 |---|---|---|
 | Opening check | Done before the session: `check_access.py` 5/5 OK | kept locally (not committed: `ready-for-td1.txt` is in `.gitignore`) |
-| 1. Twenty references | **Done, 20/20 equal to the answer key on the first attempt** | [reference-td1.csv](../reference-td1.csv) |
-| 2. Five models, 100 cells | **Done: 100/100 cells attempted, 99 with a final verdict** | [traces-td1.csv](../traces-td1.csv), [traces-td1.jsonl](../traces-td1.jsonl), per-operator `traces-*.csv` / `state-*.jsonl` |
-| 3. Traces read, two summaries | **Done: 100 comparison rows, every failure explained from its SQL/error** | [model-question-comparison-en.csv](../model-question-comparison-en.csv), [five-model-summary-en.csv](../five-model-summary-en.csv), pivot [cd_pivot-td1.md](../cd_pivot-td1.md) |
-| Prompts as used | Done, kit prompt unchanged | [prompts-en.md](../prompts-en.md) |
+| 1. Twenty references | **Done, 20/20 equal to the answer key on the first attempt** | [reference-td1.csv](../td1/reference-td1.csv) |
+| 2. Five models, 100 cells | **Done: 100/100 cells attempted, 99 with a final verdict** | [traces-td1.csv](../td1/traces-td1.csv), [traces-td1.jsonl](../td1/traces-td1.jsonl), per-operator `traces-*.csv` / `state-*.jsonl` |
+| 3. Traces read, two summaries | **Done: 100 comparison rows, every failure explained from its SQL/error** | [model-question-comparison-en.csv](../td1/model-question-comparison-en.csv), [five-model-summary-en.csv](../td1/five-model-summary-en.csv), pivot [cd_pivot-td1.md](../td1/cd_pivot-td1.md) |
+| Prompts as used | Done, kit prompt unchanged | [prompts-en.md](../td1/prompts-en.md) |
 
-**References.** Each SQL query was computed on `data/boutique.sqlite` opened read-only and independently recomputed in plain Python on the three CSV files, with a different age method (25th anniversary <= reference date < 26th anniversary) ([cd_build_references.py](../cd_build_references.py)). The two agreed 20/20, then each query was checked by one member (`checked_by` column) and the twenty values were compared with the instructor's answer key: no difference. No value comes from a model.
+**References.** Each SQL query was computed on `data/boutique.sqlite` opened read-only and independently recomputed in plain Python on the three CSV files, with a different age method (25th anniversary <= reference date < 26th anniversary) ([cd_build_references.py](../td1/cd_build_references.py)). The two agreed 20/20, then each query was checked by one member (`checked_by` column) and the twenty values were compared with the instructor's answer key: no difference. No value comes from a model.
 
-**Calls.** 126 HTTP attempts: 120 initial calls (60 Groq, 60 OpenRouter, of which 20 belong to a second, unscored E run, see 3.3) and 6 retries. HTTP status: 119 x 200, 6 x 429, 1 timeout. Every row of a question carries the same prompt fingerprint across models, runs and attempts ([prompts-en.md](../prompts-en.md), table of fingerprints). All rows were checked by [cd_check_traces.py](../cd_check_traces.py): expected model, reference, nature, attempts <= 2, CSV equal to JSONL, no API key.
+**Calls.** 126 HTTP attempts: 120 initial calls (60 Groq, 60 OpenRouter, of which 20 belong to a second, unscored E run, see 3.3) and 6 retries. HTTP status: 119 x 200, 6 x 429, 1 timeout. Every row of a question carries the same prompt fingerprint across models, runs and attempts ([prompts-en.md](../td1/prompts-en.md), table of fingerprints). All rows were checked by [cd_check_traces.py](../td1/cd_check_traces.py): expected model, reference, nature, attempts <= 2, CSV equal to JSONL, no API key.
 
 ## 2. Results
 
-Final verdict = last attempt of each cell ([model-question-comparison-en.csv](../model-question-comparison-en.csv)).
+Final verdict = last attempt of each cell ([model-question-comparison-en.csv](../td1/model-question-comparison-en.csv)).
 
 | Operator | Model (access) | Correct | Other final verdicts |
 |---|---|---:|---|
@@ -31,7 +31,7 @@ Final verdict = last attempt of each cell ([model-question-comparison-en.csv](..
 
 Total: 77 correct, 20 incorrect, 2 invalid SQL, 1 not executed.
 
-By family (official question types; a combined question counts in every family it touches; details in [five-model-summary-en.csv](../five-model-summary-en.csv)):
+By family (official question types; a combined question counts in every family it touches; details in [five-model-summary-en.csv](../td1/five-model-summary-en.csv)):
 
 | Model | period | age | product | combined (C15-C19) |
 |---|---|---|---|---|
@@ -70,14 +70,14 @@ The only failure outside age questions: E/C07, invalid SQL (`no such column: oi.
 
 ### 3.3 Process incidents
 
-- **Double run of model E.** Model E was run twice, on two accounts (Thibault's, scored: [traces-E.csv](../traces-E.csv); Mathias's, unscored: [traces-E-Mathias.csv](../traces-E-Mathias.csv)), and the two runs overlapped in time (13:46-13:50 UTC). This broke the one-request-at-a-time rule and used 20 OpenRouter calls beyond the budget. Both runs are kept as real raw evidence; only the operator's run is scored. They disagree on **7 of 20 questions** (C07, C08, C10, C11, C15, C16, C17) with the same model, prompt and temperature 0: temperature 0 does not make this free route reproducible.
+- **Double run of model E.** Model E was run twice, on two accounts (Thibault's, scored: [traces-E.csv](../td1/traces-E.csv); Mathias's, unscored: [traces-E-Mathias.csv](../td1/traces-E-Mathias.csv)), and the two runs overlapped in time (13:46-13:50 UTC). This broke the one-request-at-a-time rule and used 20 OpenRouter calls beyond the budget. Both runs are kept as real raw evidence; only the operator's run is scored. They disagree on **7 of 20 questions** (C07, C08, C10, C11, C15, C16, C17) with the same model, prompt and temperature 0: temperature 0 does not make this free route reproducible.
 - **D's first run used an invalid API key**; its files were not kept, so the corresponding access errors are not in the traces. D restarted as a separate experiment (`state-D-corrected.jsonl`).
 - **Line endings**: Git (`core.autocrlf=true`) converted LF to CRLF inside the SQL fields of the CSV files on checkout; content unchanged, checked against the JSONL. `.gitattributes` now keeps the trace files byte for byte.
 - **Summary template**: `five-model-summary-en.csv` listed `inclusionai/ling-3.0-flash-sante:free` for the third model; the model actually run, `cohere/north-mini-code:free`, was written instead.
 
 ## 4. Portfolio and routing hypothesis
 
-From [five-model-summary-en.csv](../five-model-summary-en.csv) (sources and dates in the file):
+From [five-model-summary-en.csv](../td1/five-model-summary-en.csv) (sources and dates in the file):
 
 - gpt-oss-120b: index 11.6 (kit portfolio, 2026-09-28); paid route OpenRouter $0.15 / $0.60 per million tokens.
 - gpt-oss-20b: index 10 (estimate, Artificial Analysis) / 9 (kit portfolio); paid route Groq $0.10 / $0.50.
@@ -92,7 +92,7 @@ One pass per model, twenty questions and one database: a single error changes a 
 
 ## 6. Contributions
 
-Details per item in [contributions-en.csv](../contributions-en.csv).
+Details per item in [contributions-en.csv](../td1/contributions-en.csv).
 
 | Member | Role | Contribution |
 |---|---|---|
@@ -103,7 +103,7 @@ Details per item in [contributions-en.csv](../contributions-en.csv).
 | Thibault ALLORY | E | Run of dots-3-note-preview (traces-E, scored); checked references C11-C13 |
 | Mathias COUDER | F | Repository; reference queries and independent check; checked references C14-C17; consolidation and verification of all traces; merge into traces-td1; comparison rows and summary rows for C, D, E; prompts, README, this report; second E run |
 
-**Coding assistance, declared.** Mathias used Claude Code (Claude Opus 5.5). Files prefixed `cd_` and the documents listed in [prompts-en.md](../prompts-en.md) were written with it; its prompts are reproduced there verbatim. The sub-group reviewed the code and can explain it; references were validated against the answer key, never taken from a model.
+**Coding assistance, declared.** Mathias used Claude Code (Claude Opus 5.5). Files prefixed `cd_` and the documents listed in [prompts-en.md](../td1/prompts-en.md) were written with it; its prompts are reproduced there verbatim. The sub-group reviewed the code and can explain it; references were validated against the answer key, never taken from a model.
 
 ## 7. Next steps (TD 2)
 
